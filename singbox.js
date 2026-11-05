@@ -128,6 +128,23 @@ const mihomoNodes = (ProxyUtils.produce(JSON.parse(JSON.stringify(parsedNodes)),
   .filter((p) => p && sbByTag.has(p.name)) // 只保留 sing-box 支持的节点
   .map((p) => ({ ...p, _sbTag: p.name }));
 
+// 列出 sing-box 不支持而被丢弃的节点（Sub-Store 自身的报错不带节点名）
+function describeNode(p) {
+  const bits = [p.type];
+  if (p.network && p.network !== 'tcp') bits.push(`network=${p.network}`);
+  if (p.encryption && p.encryption !== 'none') bits.push('VLESS encryption');
+  if (p.flow) bits.push(`flow=${p.flow}`);
+  if (p.plugin) bits.push(`plugin=${p.plugin}`);
+  return bits.join(', ');
+}
+const droppedBySingbox = parsedNodes.filter((p) => !sbByTag.has(p.name));
+if (droppedBySingbox.length) {
+  log(
+    `${droppedBySingbox.length} 个节点 sing-box 不支持，已丢弃（具体原因见上方 Sub-Store 的 ERROR 日志）：\n  ` +
+      droppedBySingbox.map((p) => `${p.name}（${describeNode(p)}）`).join('\n  '),
+  );
+}
+
 if (!mihomoNodes.length) {
   throw new Error('没有 sing-box 支持的节点（xhttp、VLESS encryption 等会被丢弃）');
 }
@@ -137,6 +154,13 @@ const upstreamMain = new Function(`${upstreamCode}\n;return typeof main === 'fun
 if (typeof upstreamMain !== 'function') throw new Error('上游脚本中没有 main 函数');
 
 const mc = await upstreamMain({ proxies: mihomoNodes, dns: {}, hosts: {} });
+
+// 列出被上游脚本过滤掉的节点（如“过滤非地区节点”）
+const keptByUpstream = new Set((mc.proxies || []).map((p) => p._sbTag).filter(Boolean));
+const droppedByUpstream = mihomoNodes.filter((p) => !keptByUpstream.has(p._sbTag));
+if (droppedByUpstream.length) {
+  log(`${droppedByUpstream.length} 个节点被上游覆写脚本过滤：\n  ${droppedByUpstream.map((p) => p.name).join('\n  ')}`);
+}
 
 // ==================== 2. 出站：节点 / 直连 / 策略组 ====================
 
