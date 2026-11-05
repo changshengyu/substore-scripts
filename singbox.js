@@ -1,13 +1,12 @@
 /**
  * Sub-Store 文件脚本：MyClash 覆写脚本 → sing-box 1.14+ 完整配置
  *
- * 原理：每次运行时下载 MyClash 的 mihomo 覆写脚本（Script/Script.js），
- * 用订阅节点执行它的 main()，再把生成的 mihomo 配置逐项转换成 sing-box 配置。
+ * 原理：读取 Sub-Store 传入的文件内容（Mihomo 配置或任意订阅内容）中的节点，
+ * 下载 MyClash 的 mihomo 覆写脚本（Script/Script.js）并用这些节点执行它的 main()，
+ * 再把生成的 mihomo 配置逐项转换成 sing-box 配置。
  * 策略组、分流规则、规则集、DNS、hosts 全部来自上游脚本，上游更新后无需改动本脚本。
  *
- * 参数（$arguments，均可省略，省略时使用下方默认值）：
- *   name    订阅或组合订阅名称
- *   type    subscription | collection
+ * 可选参数（$arguments）：
  *   script  上游覆写脚本地址
  *   port    覆盖混合代理端口
  */
@@ -15,9 +14,6 @@
 // ==================== 可调整的默认值 ====================
 
 const ARGS = typeof $arguments === 'object' && $arguments ? $arguments : {};
-
-const SUB_NAME = ARGS.name || '自建机场-搬瓦工-美国';
-const SUB_TYPE = ARGS.type || 'subscription';
 
 // 上游脚本地址：按顺序尝试，全部失败时使用上次成功下载的缓存
 const SCRIPT_URLS = ARGS.script
@@ -118,19 +114,22 @@ function applyRuleOptionOverrides(code) {
 
 // ==================== 1. 获取节点并执行上游脚本 ====================
 
-const sbNodes = (
-  (await produceArtifact({ type: SUB_TYPE, name: SUB_NAME, platform: 'sing-box', produceType: 'internal' })) || []
-).filter((o) => o && o.tag);
+// 节点来自 Sub-Store 传入的文件内容，同时生成 sing-box 和 mihomo 两种格式
+const inputContent = typeof $content === 'string' ? $content : '';
+const parsedNodes = inputContent.trim() ? ProxyUtils.parse(inputContent) : [];
+if (!parsedNodes.length) throw new Error('文件内容中没有节点');
+
+const sbNodes = (ProxyUtils.produce(JSON.parse(JSON.stringify(parsedNodes)), 'sing-box', 'internal') || []).filter(
+  (o) => o && o.tag,
+);
 const sbByTag = new Map(sbNodes.map((o) => [o.tag, o]));
 
-const mihomoNodes = (
-  (await produceArtifact({ type: SUB_TYPE, name: SUB_NAME, platform: 'mihomo', produceType: 'internal' })) || []
-)
+const mihomoNodes = (ProxyUtils.produce(JSON.parse(JSON.stringify(parsedNodes)), 'mihomo', 'internal') || [])
   .filter((p) => p && sbByTag.has(p.name)) // 只保留 sing-box 支持的节点
   .map((p) => ({ ...p, _sbTag: p.name }));
 
 if (!mihomoNodes.length) {
-  throw new Error(`订阅「${SUB_NAME}」中没有 sing-box 支持的节点（xhttp、VLESS encryption 等会被 Sub-Store 丢弃）`);
+  throw new Error('没有 sing-box 支持的节点（xhttp、VLESS encryption 等会被丢弃）');
 }
 
 const upstreamCode = applyRuleOptionOverrides(await loadUpstreamScript());

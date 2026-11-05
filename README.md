@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/changshengyu/substore-scripts/main/sort.js
 
 脚本里没有写死任何策略组或规则。每次运行时，它会：
 
-1. 从 Sub-Store 取出同一份订阅的 mihomo 格式和 sing-box 格式节点，只保留 sing-box 支持的节点；
+1. 解析 Sub-Store 传给脚本的文件内容（Mihomo 配置或任意订阅内容）中的节点，只保留 sing-box 支持的节点；
 2. 下载 MyClash 的 [`Script/Script.js`](https://github.com/changshengyu/MyClash/blob/main/Script/Script.js)（下载失败时使用上次的缓存）；
 3. 用这些节点执行它的 `main()`，得到完整的 mihomo 配置；
 4. 把策略组、规则、规则集、DNS、hosts、TUN 等逐项转换成 sing-box 配置。
@@ -52,7 +52,6 @@ MyClash 每天自动同步 AIsouler/MyClash 上游，所以上游的规则和分
 
 都在脚本开头：
 
-- `SUB_NAME` / `SUB_TYPE`：默认订阅；也可以通过 `$arguments` 的 `name`、`type` 传入。
 - `SCRIPT_URLS`：上游脚本地址；也可以通过 `script` 参数传入。
 - `RULE_OPTION_OVERRIDES`：覆盖上游 `ruleOptionsEnable` 里的开关，例如 `{ 屏蔽国外QUIC: true }`。
 - `OVERRIDES`：混合端口（默认 20808，可用 `port` 参数覆盖）和监听地址（默认只监听本机）。
