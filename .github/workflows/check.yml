@@ -1,0 +1,35 @@
+name: Check sing-box conversion
+
+# 用最新的上游覆写脚本和最新稳定版 sing-box 校验转换结果。
+# 上游改动导致转换失败时，这个工作流会失败，GitHub 会发邮件提醒。
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 4,12,20 * * *' # 在 MyClash 每天三次同步上游之后运行
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install latest sing-box
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view --repo SagerNet/sing-box --json tagName -q .tagName)
+          ver=${tag#v}
+          curl -fsSL "https://github.com/SagerNet/sing-box/releases/download/${tag}/sing-box-${ver}-linux-amd64.tar.gz" | tar xz
+          sudo install "sing-box-${ver}-linux-amd64/sing-box" /usr/local/bin/sing-box
+          sing-box version
+
+      - name: Generate config from upstream script
+        run: node test/run.mjs test/out/config.json
+
+      - name: sing-box check
+        run: sing-box check -c test/out/config.json

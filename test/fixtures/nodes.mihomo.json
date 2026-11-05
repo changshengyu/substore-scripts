@@ -1,0 +1,227 @@
+[
+  {
+    "name": "搬瓦工 美国 XHTTP-Reality",
+    "type": "vless",
+    "server": "203.0.113.10",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "xhttp",
+    "xhttp-opts": {
+      "path": "/path",
+      "host": "amd.com",
+      "mode": "auto"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "reality-opts": {
+      "public-key": "NSH6aSGeo7dsi2PFXBz_sb_ePZ9QqRhU5FqGy17-Nk4",
+      "short-id": "0123456789"
+    },
+    "servername": "amd.com"
+  },
+  {
+    "name": "搬瓦工 美国 gRPC-Reality",
+    "type": "vless",
+    "server": "203.0.113.10",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "grpc",
+    "grpc-opts": {
+      "grpc-service-name": "grpc"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "reality-opts": {
+      "public-key": "NSH6aSGeo7dsi2PFXBz_sb_ePZ9QqRhU5FqGy17-Nk4",
+      "short-id": "0123456789"
+    },
+    "servername": "amd.com"
+  },
+  {
+    "name": "搬瓦工 美国 Reality",
+    "type": "vless",
+    "server": "203.0.113.10",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "flow": "xtls-rprx-vision",
+    "network": "tcp",
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "reality-opts": {
+      "public-key": "NSH6aSGeo7dsi2PFXBz_sb_ePZ9QqRhU5FqGy17-Nk4",
+      "short-id": "0123456789"
+    },
+    "servername": "amd.com"
+  },
+  {
+    "name": "搬瓦工 美国 Hy2",
+    "type": "hysteria2",
+    "server": "203.0.113.10",
+    "port": 36099,
+    "password": "00000000-0000-4000-8000-000000000000",
+    "up": "150",
+    "down": "300",
+    "obfs": "salamander",
+    "obfs-password": "example",
+    "sni": "vps02.example.com",
+    "alpn": [
+      "h3"
+    ],
+    "udp": true
+  },
+  {
+    "name": "备用 搬瓦工 美国 XHTTP 01",
+    "type": "vless",
+    "server": "vps01.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "xhttp",
+    "xhttp-opts": {
+      "path": "/path",
+      "host": "vps01.example.com",
+      "mode": "auto"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "h2"
+    ],
+    "servername": "vps01.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 XHTTP 02",
+    "type": "vless",
+    "server": "vps02.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "xhttp",
+    "xhttp-opts": {
+      "path": "/path",
+      "host": "vps02.example.com",
+      "mode": "auto"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "h2"
+    ],
+    "servername": "vps02.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 gRPC 01",
+    "type": "vless",
+    "server": "vps01.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "grpc",
+    "grpc-opts": {
+      "grpc-service-name": "grpc"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "h2"
+    ],
+    "servername": "vps01.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 gRPC 02",
+    "type": "vless",
+    "server": "vps02.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "grpc",
+    "grpc-opts": {
+      "grpc-service-name": "grpc"
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "h2"
+    ],
+    "servername": "vps02.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 WS 01",
+    "type": "vless",
+    "server": "vps01.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "ws",
+    "ws-opts": {
+      "path": "/path",
+      "headers": {
+        "Host": "vps01.example.com"
+      }
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "http/1.1"
+    ],
+    "servername": "vps01.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 WS 02",
+    "type": "vless",
+    "server": "vps02.example.com",
+    "port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "udp": true,
+    "packet-encoding": "xudp",
+    "encryption": "mlkem768x25519plus.native.0rtt.EXAMPLE",
+    "network": "ws",
+    "ws-opts": {
+      "path": "/path",
+      "headers": {
+        "Host": "vps02.example.com"
+      }
+    },
+    "tls": true,
+    "client-fingerprint": "chrome",
+    "alpn": [
+      "http/1.1"
+    ],
+    "servername": "vps02.example.com"
+  },
+  {
+    "name": "备用 搬瓦工 美国 TUIC",
+    "type": "tuic",
+    "server": "203.0.113.10",
+    "port": 14259,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "password": "00000000-0000-4000-8000-000000000000",
+    "udp-relay-mode": "native",
+    "reduce-rtt": true,
+    "sni": "vps02.example.com",
+    "alpn": [
+      "h3"
+    ],
+    "udp": true,
+    "congestion-controller": "cubic",
+    "version": 5
+  }
+]

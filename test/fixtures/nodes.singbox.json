@@ -1,0 +1,63 @@
+[
+  {
+    "tag": "搬瓦工 美国 Reality",
+    "type": "vless",
+    "server": "203.0.113.10",
+    "server_port": 443,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "tls": {
+      "enabled": true,
+      "server_name": "amd.com",
+      "insecure": false,
+      "reality": {
+        "enabled": true,
+        "public_key": "NSH6aSGeo7dsi2PFXBz_sb_ePZ9QqRhU5FqGy17-Nk4",
+        "short_id": "0123456789"
+      },
+      "utls": {
+        "enabled": true,
+        "fingerprint": "chrome"
+      }
+    },
+    "packet_encoding": "xudp",
+    "flow": "xtls-rprx-vision"
+  },
+  {
+    "tag": "搬瓦工 美国 Hy2",
+    "type": "hysteria2",
+    "server": "203.0.113.10",
+    "server_port": 36099,
+    "password": "00000000-0000-4000-8000-000000000000",
+    "obfs": {
+      "type": "salamander",
+      "password": "example"
+    },
+    "tls": {
+      "enabled": true,
+      "server_name": "vps02.example.com",
+      "insecure": false,
+      "alpn": [
+        "h3"
+      ]
+    },
+    "up_mbps": 150,
+    "down_mbps": 300
+  },
+  {
+    "tag": "备用 搬瓦工 美国 TUIC",
+    "type": "tuic",
+    "server": "203.0.113.10",
+    "server_port": 14259,
+    "uuid": "00000000-0000-4000-8000-000000000000",
+    "password": "00000000-0000-4000-8000-000000000000",
+    "tls": {
+      "enabled": true,
+      "server_name": "vps02.example.com",
+      "insecure": false,
+      "alpn": [
+        "h3"
+      ]
+    },
+    "zero_rtt_handshake": true
+  }
+]
